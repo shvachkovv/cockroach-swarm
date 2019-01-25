@@ -1,0 +1,25 @@
+version: "3.4"
+
+services:
+  cockroach:
+    image: <url to the image>
+    command: "start --insecure"
+    hostname: "{{.Service.Name}}.{{.Task.Slot}}"
+    environment:
+      SNAME: "{{.Service.Name}}"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 120s
+        order: stop-first
+    networks:
+    - cockroach-network
+    ports:
+    - "8080:8080"
+
+networks:
+  cockroach-network:
+    driver: overlay
