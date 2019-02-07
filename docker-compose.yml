@@ -17,9 +17,16 @@ services:
         order: stop-first
     networks:
     - cockroach-network
+    volumes:
+    - "cockroach_data:/cockroach/cockroach-data"
     ports:
     - "8080:8080"
+    - "26257:26257"
 
 networks:
   cockroach-network:
     driver: overlay
+
+volumes:
+  cockroach_data:
+    name: '{{.Service.Name}}_DataVol-{{.Task.Slot}}'
